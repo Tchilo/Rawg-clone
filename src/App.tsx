@@ -4,12 +4,17 @@ import GameGrid from "./components/GameGrid"
 import GenreList from "./components/GenreList"
 
 const App = () => {
-  return <Grid templateAreas={{ base: `" header" " main"`, lg: `"header header" "nav main"` }}>
+  return <Grid templateAreas={{ base: `" header" " main"`, lg: `"header header" "nav main"` }}
+    templateColumns={{
+      base: '1fr',
+      lg:'200px 1fr'
+  }}
+  >
     <GridItem area={'header'}>
       <Navbar />
     </GridItem>
     <Show above="lg">
-      <GridItem area={'nav'}>
+      <GridItem area={'nav'} px={5}>
         <GenreList/>
       </GridItem>
     </Show>
