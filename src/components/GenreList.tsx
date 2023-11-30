@@ -1,9 +1,12 @@
-import { HStack, Image, Text, List, ListItem } from "@chakra-ui/react"
+import { HStack, Image, Text, List, ListItem, Spinner } from "@chakra-ui/react"
 import useGenre from "../hooks/useGenre"
 import modifyImage from "../services/modifyImage"
 
 const GenreList = () => {
     const { data: genres, isLoading, error } = useGenre()
+
+    if (isLoading) return <Spinner />
+    if(error) return null
     return (
 
         <List justifyContent='flex-start'>
