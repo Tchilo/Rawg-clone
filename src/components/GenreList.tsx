@@ -3,9 +3,10 @@ import useGenre, { Genre } from "../hooks/useGenre"
 import modifyImage from "../services/modifyImage"
 
 interface Props {
-    onSelect:(genre:Genre) => void
+    onSelect: (genre: Genre) => void
+    selectedGenre:Genre|null
 }
-const GenreList = ({onSelect}:Props) => {
+const GenreList = ({onSelect,selectedGenre}:Props) => {
     const { data: genres, isLoading, error } = useGenre()
 
     if (isLoading) return <Spinner />
@@ -18,7 +19,7 @@ const GenreList = ({onSelect}:Props) => {
                 <ListItem py='5px' key={genre.id} overflow='hidden'>
                     <HStack>
                         <Image boxSize='32px' borderRadius={8} src={modifyImage(genre.image_background)} />
-                        <Button onClick={() => onSelect(genre)
+                        <Button fontWeight={genre.id === selectedGenre?.id?'bold':'normal'} onClick={() => onSelect(genre)
                         } variant='link' fontSize='lg'>{genre.name}</Button>
                     </HStack>
                 </ListItem>)}
