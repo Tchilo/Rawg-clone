@@ -1,35 +1,52 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Flex, Grid, GridItem, Box, Show } from "@chakra-ui/react"
+import Navbar from "./components/Navbar"
+import GameGrid from "./components/GameGrid"
+import GenreList from "./components/GenreList"
+import { useState } from "react"
+import { Genre } from "./hooks/useGenre"
+import PlatformSelector from "./components/PlatformSelector"
+import { Platform } from "./hooks/useGames"
+import SortSelector from "./components/SortSelector"
+import GameHeading from "./components/GameHeading"
 
-function App() {
-  const [count, setCount] = useState(0)
+export interface GameQuery {
+  genre: Genre | null
+  platform: Platform | null
+  sortOrder: string | null
+  searchText: string
+}
+const App = () => {
+  const [gameQuery, setGameQuery] = useState<GameQuery>({} as GameQuery)
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+
+  return <Grid templateAreas={{ base: `" header" " main"`, lg: `"header header" "nav main"` }}
+    templateColumns={{
+      base: '1fr',
+      lg: '200px 1fr'
+    }}
+  >
+    <GridItem area={'header'}>
+      <Navbar onSearch={(searchText) => setGameQuery({ ...gameQuery, searchText })} />
+    </GridItem>
+    <Show above="lg">
+      <GridItem area={'nav'} px={5}>
+        <GenreList selectedGenre={gameQuery.genre} onSelect={(genre) => setGameQuery({ ...gameQuery, genre })} />
+      </GridItem>
+    </Show>
+    <GridItem area={'main'}>
+      <GameHeading gameQuery={gameQuery} />
+      <Box pl={2}>
+
+        <Flex mb={5}>
+          <Box mr={5}>
+            <PlatformSelector platform={gameQuery.platform} onSelect={(platform) => setGameQuery({ ...gameQuery, platform })} />
+          </Box>
+          <SortSelector selectedSort={gameQuery.sortOrder} onSelect={(value) => setGameQuery({ ...gameQuery, sortOrder: value })} />
+        </Flex>
+      </Box>
+      <GameGrid gameQuery={gameQuery} />
+    </GridItem>
+  </Grid>
 }
 
 export default App
