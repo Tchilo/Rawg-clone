@@ -1,4 +1,4 @@
-import brokenImage from '../assets/brokenImage.jpg'
+import brokenImage from '../assets/no-image-placeholder.webp'
 const modifyImage = (url: string) => {
     if(!url) return brokenImage
     const target = 'media/'
